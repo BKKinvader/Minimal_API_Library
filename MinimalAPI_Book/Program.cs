@@ -7,6 +7,7 @@ using MinimalAPI_Book.Models;
 using MinimalAPI_Book.Models.DTOs;
 using MinimalAPI_Book.Services;
 using MinimalAPI_Book.Validations;
+using System.ComponentModel.DataAnnotations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddTransient<IValidator<BookCreateDTO>, BookCreateValidation>();
+builder.Services.AddTransient<IValidator<BookUpdateDTO>, BookUpdateValidation>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
+
 
 //Configure the DATABASE connection and register my BookDbContext
 builder.Services.AddDbContext<BookDbContext>(options =>
@@ -42,8 +45,12 @@ app.MapGet("/api/books/", async (BookDbContext dbcontext) =>
 {
     try
     {
-        var books = await dbcontext.Books.ToListAsync();
-        return Results.Ok(books);
+        //With APIResponse
+        APIResponse response = new APIResponse();
+        response.Result = await dbcontext.Books.ToListAsync();
+        response.IsSuccess = true;
+        response.StatusCode = System.Net.HttpStatusCode.OK;
+        return Results.Ok(response);
     }
     catch (Exception ex)
     {
@@ -61,19 +68,24 @@ app.MapGet("/api/books/", async (BookDbContext dbcontext) =>
         // Return an error response we created
         return Results.BadRequest(response);
     }
-});
+}).WithName("GetBooks").Produces(200);
 
 //Get Book by Id
 app.MapGet("/api/books/{id:guid}", async (Guid id, BookDbContext dbcontext) =>
 {
     try
     {
-        var book = await dbcontext.Books.FirstOrDefaultAsync(b => b.Id == id);
-        if (book == null)
+        //With APIResponse
+        APIResponse response = new APIResponse();
+        response.Result = await dbcontext.Books.FirstOrDefaultAsync(b => b.Id == id);
+        response.IsSuccess = true;
+        response.StatusCode = System.Net.HttpStatusCode.OK;
+       
+        if (response.Result == null)
         {
             return Results.NotFound($"Book with id:{id} was not found");
         }
-        return Results.Ok(book);
+        return Results.Ok(response);
     }
     catch (Exception ex)
     {
@@ -87,15 +99,33 @@ app.MapGet("/api/books/{id:guid}", async (Guid id, BookDbContext dbcontext) =>
 
         return Results.BadRequest(response);
     };
-});
+}).WithName("GetBook");
 
 
 
 //Create
-app.MapPost("/api/createbook/", async (IBookRepository bookRepository, [FromBody] BookCreateDTO bookCreateDTO) =>
+app.MapPost("/api/createbook/", async (IBookRepository bookRepository, [FromBody] BookCreateDTO bookCreateDTO,IValidator<BookCreateDTO> validator) =>
 {
+
+
     try
     {
+        // Validate the incoming data
+        var validationResult = await validator.ValidateAsync(bookCreateDTO);
+        if (!validationResult.IsValid)
+        {
+            
+            var response = new APIResponse
+            {
+                IsSuccess = false,
+                StatusCode = System.Net.HttpStatusCode.BadRequest,
+                ErrorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList()
+            };
+
+            return Results.BadRequest(response);
+        }
+
+       
         var book = new Book
         {
             Title = bookCreateDTO.Title,
@@ -106,18 +136,13 @@ app.MapPost("/api/createbook/", async (IBookRepository bookRepository, [FromBody
             Created = DateTime.UtcNow
         };
 
-
         await bookRepository.CreateAsync(book);
-
-        // Return a success response
         return Results.Created($"/api/book/{book.Id}", book);
     }
     catch (Exception ex)
     {
-        
         Console.WriteLine($"Error creating book: {ex}");
 
-       
         var response = new APIResponse
         {
             IsSuccess = false,
@@ -128,16 +153,33 @@ app.MapPost("/api/createbook/", async (IBookRepository bookRepository, [FromBody
         return Results.BadRequest(response);
     }
 
-});
+}).WithName("CreateBook").Accepts<BookCreateDTO>("application/json").Produces<APIResponse>(201).Produces(400);
 
 
 
 
 //Update
-app.MapPost("/api/UpdateBook/{id}",async (Guid id, [FromBody] BookUpdateDTO bookUpdateDTO, IBookRepository bookRepository) =>
+app.MapPost("/api/UpdateBook/{id}",async (Guid id, [FromBody] BookUpdateDTO bookUpdateDTO, IBookRepository bookRepository, IValidator <BookUpdateDTO> validator) =>
 {
     try
     {
+        //WithOut APIResponse
+        // Validate the incoming data
+        var validationResult = await validator.ValidateAsync(bookUpdateDTO);
+        if (!validationResult.IsValid)
+        {
+
+            var response = new APIResponse
+            {
+                IsSuccess = false,
+                StatusCode = System.Net.HttpStatusCode.BadRequest,
+                ErrorMessages = validationResult.Errors.Select(error => error.ErrorMessage).ToList()
+            };
+
+            return Results.BadRequest(response);
+        }
+
+
         var existingBook = await bookRepository.GetByIdAsync(id);
         if (existingBook == null)
         {
@@ -149,7 +191,7 @@ app.MapPost("/api/UpdateBook/{id}",async (Guid id, [FromBody] BookUpdateDTO book
         existingBook.Author = bookUpdateDTO.Author;
         existingBook.Genre = bookUpdateDTO.Genre;
         existingBook.Description = bookUpdateDTO.Description;
-        existingBook.IsAvailable = bookUpdateDTO.IsAvalible;
+        existingBook.IsAvailable = bookUpdateDTO.IsAvailable;
 
         await bookRepository.UpdateAsync(existingBook);
         return Results.Ok("Book updated successfully");
@@ -169,13 +211,14 @@ app.MapPost("/api/UpdateBook/{id}",async (Guid id, [FromBody] BookUpdateDTO book
     }
 
 
-});
+}).WithName("UpdateBook").Accepts<BookUpdateDTO>("application/json").Produces<APIResponse>(200).Produces(400);
 
 //Delete
 app.MapDelete("/api/DeleteBook/{id}", async (Guid id, IBookRepository bookRepository) =>
 {
     try
     {
+        //WithOut APIResponse
         var bookToDelete = await bookRepository.GetByIdAsync(id);
 
         if (bookToDelete == null)
@@ -202,5 +245,168 @@ app.MapDelete("/api/DeleteBook/{id}", async (Guid id, IBookRepository bookReposi
     }
 });
 
-app.Run();
 
+
+//Get Book by Title
+app.MapGet("/api/books/title/{title}", async (string title, BookDbContext dbcontext) =>
+{
+    try
+    {
+       
+        var matchingTitle = await dbcontext.Books
+       .Where(t => t.Title.Contains(title)) 
+       .ToListAsync();
+
+
+
+        if (matchingTitle.Count == 0)
+        {
+            return Results.NotFound($"Book with title : {title} was not found");
+        }
+        var response = new APIResponse
+        {
+            IsSuccess = true,
+            StatusCode = System.Net.HttpStatusCode.OK,
+            Result = matchingTitle
+        };
+
+        return Results.Ok(response);
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error retrieving book by Title: {ex}");
+        var response = new APIResponse
+        {
+            IsSuccess = false,
+            StatusCode = System.Net.HttpStatusCode.InternalServerError,
+            ErrorMessages = new List<string> { "Error retrieving book by Title." }
+        };
+
+        return Results.BadRequest(response);
+    }
+
+});
+
+//Get Book by Auther using contain 
+app.MapGet("/api/books/author/{author}", async (string author, BookDbContext dbcontext) =>
+{
+    try
+    {
+       
+         var matchingAuthors = await dbcontext.Books
+        .Where(a => a.Author.Contains(author)) // "Contain" if not searching full name
+        .ToListAsync();
+
+        
+
+        if (matchingAuthors.Count == 0)
+        {
+            return Results.NotFound($"Autor with name {author} was not found");
+        }
+        var response = new APIResponse
+        {
+            IsSuccess = true,
+            StatusCode = System.Net.HttpStatusCode.OK,
+            Result = matchingAuthors
+        };
+
+        return Results.Ok(response);
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error retrieving authors: {ex}");
+        var response = new APIResponse
+        {
+            IsSuccess = false,
+            StatusCode = System.Net.HttpStatusCode.InternalServerError,
+            ErrorMessages = new List<string> { "Error retrieving Author." }
+        };
+
+        return Results.BadRequest(response);
+    }
+
+});
+
+//Get Book by Genre 
+app.MapGet("/api/books/genre/{genre}", async (string genre, BookDbContext dbcontext) =>
+{
+    try
+    {
+
+        var matchingGenre = await dbcontext.Books
+       .Where(g => g.Genre.Contains(genre)) 
+       .ToListAsync();
+
+
+
+        if (matchingGenre.Count == 0)
+        {
+            return Results.NotFound($"Genre: {genre} was not found");
+        }
+        var response = new APIResponse
+        {
+            IsSuccess = true,
+            StatusCode = System.Net.HttpStatusCode.OK,
+            Result = matchingGenre
+        };
+
+        return Results.Ok(response);
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error retrieving Genre: {ex}");
+        var response = new APIResponse
+        {
+            IsSuccess = false,
+            StatusCode = System.Net.HttpStatusCode.InternalServerError,
+            ErrorMessages = new List<string> { "Error retrieving Genre." }
+        };
+
+        return Results.BadRequest(response);
+    }
+
+});
+
+//Get all Available books
+app.MapGet("/api/books/available", async (BookDbContext dbcontext) =>
+{
+    try
+    {
+        var availableBooks = await dbcontext.Books
+        .Where(b => b.IsAvailable)
+        .ToListAsync();
+
+        if(availableBooks.Count == 0)
+        {
+            return Results.NotFound("There is no available books");
+        }
+        var response = new APIResponse
+        {
+            IsSuccess = true,
+            StatusCode = System.Net.HttpStatusCode.OK,
+            Result = availableBooks
+        };
+
+        return Results.Ok(response);
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error retrieving available books: {ex}");
+        var response = new APIResponse
+        {
+            IsSuccess = false,
+            StatusCode = System.Net.HttpStatusCode.InternalServerError,
+            ErrorMessages = new List<string> { "Error retrieving available books." }
+        };
+
+        return Results.BadRequest(response);
+
+    }
+});
+
+
+app.Run();

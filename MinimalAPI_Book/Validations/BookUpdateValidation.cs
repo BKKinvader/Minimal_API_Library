@@ -12,7 +12,7 @@ namespace MinimalAPI_Book.Validations
             RuleFor(model => model.Author).NotEmpty();
             RuleFor(model => model.Genre).NotEmpty();
             RuleFor(model => model.Description).NotEmpty();
-            RuleFor(model => model.IsAvalible).NotEmpty();
+            RuleFor(model => model.IsAvailable).NotEmpty();
         }
 
     }

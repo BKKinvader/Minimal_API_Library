@@ -2,9 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Web_Book</RootNamespace>
+    <UserSecretsId>3ff43de9-7a82-4e66-bb7d-2835331cc8c9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -27,7 +27,7 @@ namespace MinimalAPI_Book.Validations
                 .MaximumLength(500) 
                 .WithMessage("Description is required and must not exceed 500 characters.");
 
-            RuleFor(model => model.IsAvalible)
+            RuleFor(model => model.IsAvailable)
                 .NotNull() // Ensure it's not null
                 .WithMessage("IsAvalible must be provided.");
 

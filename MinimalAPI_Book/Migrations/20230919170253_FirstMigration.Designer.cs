@@ -12,7 +12,7 @@ using MinimalAPI_Book.Data;
 namespace MinimalAPI_Book.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20230907140019_FirstMigration")]
+    [Migration("20230919170253_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -62,21 +62,21 @@ namespace MinimalAPI_Book.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("68da34b5-c6e4-47c8-8f21-87a82b0f8245"),
+                            Id = new Guid("f37fcf9d-4ffd-4302-9893-528c70818633"),
                             Author = "Sara Johnson",
-                            Created = new DateTime(2023, 9, 7, 14, 0, 19, 252, DateTimeKind.Utc).AddTicks(236),
-                            DateOfBorrowed = new DateTime(2023, 8, 28, 14, 0, 19, 252, DateTimeKind.Utc).AddTicks(237),
+                            Created = new DateTime(2023, 9, 19, 17, 2, 53, 306, DateTimeKind.Utc).AddTicks(20),
+                            DateOfBorrowed = new DateTime(2023, 9, 9, 17, 2, 53, 306, DateTimeKind.Utc).AddTicks(21),
                             Description = "En romantisk berättelse om kärlek och relationer.",
                             Genre = "Romance",
                             IsAvailable = false,
-                            ReturnedDate = new DateTime(2023, 9, 2, 14, 0, 19, 252, DateTimeKind.Utc).AddTicks(240),
+                            ReturnedDate = new DateTime(2023, 9, 14, 17, 2, 53, 306, DateTimeKind.Utc).AddTicks(24),
                             Title = "Love Story"
                         },
                         new
                         {
-                            Id = new Guid("45063f3c-aa51-4fb8-a9e3-56f8eec57778"),
+                            Id = new Guid("cc2a6b71-6149-4e23-9f70-87e990b8c4cd"),
                             Author = "Mikael Svensson",
-                            Created = new DateTime(2023, 9, 7, 14, 0, 19, 252, DateTimeKind.Utc).AddTicks(241),
+                            Created = new DateTime(2023, 9, 19, 17, 2, 53, 306, DateTimeKind.Utc).AddTicks(25),
                             Description = "En science fiction-berättelse som utforskar framtiden.",
                             Genre = "Science Fiction",
                             IsAvailable = true,
@@ -84,9 +84,9 @@ namespace MinimalAPI_Book.Migrations
                         },
                         new
                         {
-                            Id = new Guid("771e64e1-7a2e-4abc-85bc-a0f3facc05f0"),
+                            Id = new Guid("69988e8f-896b-4ae7-9452-01770fbe1f3b"),
                             Author = "Laura Smith",
-                            Created = new DateTime(2023, 9, 7, 14, 0, 19, 252, DateTimeKind.Utc).AddTicks(243),
+                            Created = new DateTime(2023, 9, 19, 17, 2, 53, 306, DateTimeKind.Utc).AddTicks(27),
                             Description = "En spännande mysteriebok med gåtor att lösa.",
                             Genre = "Mystery",
                             IsAvailable = true,
@@ -94,14 +94,14 @@ namespace MinimalAPI_Book.Migrations
                         },
                         new
                         {
-                            Id = new Guid("26bde574-b8d7-40d8-92f3-3d316d59bc66"),
+                            Id = new Guid("5d6a2441-33d3-4288-a853-0ceec4a10d1f"),
                             Author = "John Adams",
-                            Created = new DateTime(2023, 9, 7, 14, 0, 19, 252, DateTimeKind.Utc).AddTicks(244),
-                            DateOfBorrowed = new DateTime(2023, 8, 23, 14, 0, 19, 252, DateTimeKind.Utc).AddTicks(244),
+                            Created = new DateTime(2023, 9, 19, 17, 2, 53, 306, DateTimeKind.Utc).AddTicks(28),
+                            DateOfBorrowed = new DateTime(2023, 9, 4, 17, 2, 53, 306, DateTimeKind.Utc).AddTicks(28),
                             Description = "En episk historisk roman som tar dig till en annan tid.",
                             Genre = "Historical Fiction",
                             IsAvailable = false,
-                            ReturnedDate = new DateTime(2023, 8, 30, 14, 0, 19, 252, DateTimeKind.Utc).AddTicks(245),
+                            ReturnedDate = new DateTime(2023, 9, 11, 17, 2, 53, 306, DateTimeKind.Utc).AddTicks(29),
                             Title = "Historical Fiction Saga"
                         });
                 });

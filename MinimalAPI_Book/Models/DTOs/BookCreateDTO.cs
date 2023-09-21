@@ -17,6 +17,6 @@ namespace MinimalAPI_Book.Models.DTOs
         [Required]
         public string Description { get; set; }
 
-        public bool IsAvalible { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }
