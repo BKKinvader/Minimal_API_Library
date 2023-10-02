@@ -21,9 +21,14 @@ namespace Web_Book.Services
             });
         }
 
-        public Task<T> DeleteBookAsync<T>(Guid id)
+        public async Task<T> DeleteBookAsync<T>(Guid id)
         {
-            throw new NotImplementedException();
+            return await this.SendAsync<T>(new Models.ApiRequest()
+            {
+                ApiType = StaticDetails.ApiType.DELETE,
+                Url = StaticDetails.LibraryApiBase + "/api/deleteBook/" + id,
+                AccessToken = ""
+            });
         }
 
         public Task<T> GetAllBooks<T>()
@@ -46,9 +51,17 @@ namespace Web_Book.Services
             });
         }
 
-        public Task<T> UpdateBookAsync<T>(BookUpdateDTO bookUpdateDTO)
+        public async Task<T> UpdateBookAsync<T>(BookUpdateDTO bookUpdateDTO)
         {
-            throw new NotImplementedException();
+            return await this.SendAsync<T>(new Models.ApiRequest()
+            {
+                ApiType = StaticDetails.ApiType.PUT,
+                Data = bookUpdateDTO,
+                Url = StaticDetails.LibraryApiBase + "/api/updateBook/",
+                AccessToken = ""
+            });
         }
+
+       
     }
 }

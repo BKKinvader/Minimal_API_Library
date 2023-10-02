@@ -17,6 +17,152 @@ html {
   min-height: 100%;
 }
 
+main{
+    margin-top:10%;
+}
+
+h1 {
+    color: #e66162;
+
+}
+
+h4 {
+    color: #e66162;
+}
+
+.custom-btn {
+    width: 100px;
+    background-color: #e66162;
+    color: white;
+    border-color: white;
+    margin-top: 2px;
+}
+
+.custom-button {
+    background-color: #e66162;
+    color: white;
+    border-color: #e66162;
+}
+
+    .custom-button:hover {
+        background-color: white; /* Background color on hover */
+        color: #e66162; /* Text color on hover */
+    }
+
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: white;
+}
+
+.footer {
+    
+    color: white; /* You can adjust text color as needed */
+}
+
+
+
+/* Custom navbar styling */
+.custom-navbar {
+    background-color: #e66162;
+    color: white;
+    border-bottom: 1px solid #fff;
+    font: 16px 'Core Circus W00 Regular', sans-serif;
+    height: 80px; /* Adjust the navbar height as needed */
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center;
+}
+
+    
+    .custom-navbar .navbar-brand {
+        font-weight: bold; 
+    }
+
+    
+    .custom-navbar .navbar-toggler-icon {
+        background-color: white; 
+    }
+
+   
+    .custom-navbar .nav-link {
+        color: white !important; 
+        font-weight: bold; 
+    }
+
+  
+    .custom-navbar .nav-item.active .nav-link {
+        background-color: transparent; 
+        color: #fff !important; 
+    }
+
+
+.navbar-brand {
+    color: white;
+    font-weight: bold;
+    border-radius: 20px; 
+    padding: 5px 15px; 
+    
+    transition: color 0.3s;
+}
+
+    .navbar-brand:hover {
+        color: white; 
+    }
+
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #e66162; 
+    color: white; 
+    height: 5cm;
+    text-align: center; 
+    line-height: 5cm; 
+    border-top: 2px solid white;
+}
+
+
+/* Table styles */
+table {
+    border: 2px solid #e66162;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tbody {
+    border: 2px solid #e66162;
+}
+
+thead {
+    background-color: #e66162;
+    color: white;
+}
+
+th, td {
+    border: 2px solid #e66162;
+    padding: 10px; /* Add padding for better spacing */
+    text-align: left;
+}
+
+/* List and link styles */
+li {
+    font-size: 20px; /* Adjust the font size as needed */
+    margin-bottom: 10px; /* Add margin between list items */
+}
+
+a {
+    font-size: 20px; /* Adjust the font size as needed */
+    color: #e66162; /* Link color */
+    text-decoration: none; /* Remove underlines from links */
+    transition: color 0.3s; /* Smooth color transition on hover */
+}
+
+    a:hover {
+        color: #ff0000; /* Change link color on hover */
+    }
+
+row {
+    color: #e66162;
 }

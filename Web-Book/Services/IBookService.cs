@@ -8,6 +8,7 @@ namespace Web_Book.Services
         Task<T> GetBookById<T>(Guid id);
         Task<T> CreateBookAsync<T>(BookCreateDTO bookCreateDTO);
         Task<T> UpdateBookAsync<T>(BookUpdateDTO bookUpdateDTO);
-        Task<T> DeleteBookAsync<T>(Guid id); 
+        Task<T> DeleteBookAsync<T>(Guid id);
+       
     }
 }
