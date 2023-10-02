@@ -1,0 +1,74 @@
+﻿@model BookDTO
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<div>
+    <form asp-action="BookDelete">
+        <input asp-for="Id" hidden />
+        <div class="container border p-6" style="border-color: #e66162;">
+            <h4>Confirm delete</h4>
+            <hr />
+            <div class="row">
+            
+                <dl class="row">
+                    <dt class="col-sm-2" style="color: #e66162">
+                        @Html.DisplayNameFor(model => model.Title)
+                    </dt>
+
+                    <dd class="col-sm-10" style="color: #e66162">
+                        @Html.DisplayFor(model => model.Title)
+                    </dd>
+
+                    <dt class="col-sm-2" style="color: #e66162">
+                        @Html.DisplayNameFor(model => model.Author)
+                    </dt>
+
+                    <dd class="col-sm-10" style="color: #e66162">
+                        @Html.DisplayFor(model => model.Author)
+                    </dd>
+
+                    <dt class="col-sm-2" style="color: #e66162">
+                        @Html.DisplayNameFor(model => model.Genre)
+                    </dt>
+
+                    <dd class="col-sm-10" style="color: #e66162">
+                        @Html.DisplayFor(model => model.Genre)
+                    </dd>
+
+                    <dt class="col-sm-2" style="color: #e66162">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+
+                    <dd class="col-sm-10" style="color: #e66162">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+
+                    <dt class="col-sm-2" style="color: #e66162">
+                        @Html.DisplayNameFor(model => model.IsAvailable)
+                    </dt>
+
+                    <dd class="col-sm-10" style="color: #e66162">
+                        @Html.DisplayFor(model => model.IsAvailable)
+                    </dd>
+
+                    <dt class="col-sm-2" style="color: #e66162">
+                        @Html.DisplayNameFor(model => model.Created)
+                    </dt>
+
+                    <dd class="col-sm-10" style="color: #e66162">
+                        @Html.DisplayFor(model => model.Created)
+                    </dd>
+           
+                </dl>
+             
+                <div class="col-5">
+                    <input type="submit" value="Delete" class="btn btn-danger" style="margin-bottom:10px"/>
+                    <a asp-action="BookIndex" class="btn btn-danger" style="margin-bottom:10px" >Back To List</a>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+</div>

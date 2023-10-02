@@ -1,0 +1,63 @@
+﻿@model BookDTO
+
+@{
+    ViewData["Title"] = "BookUpdate";
+}
+<h1>Edit book</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BookUpdate">
+            <input asp-for="Id" hidden />
+
+            <div class="form-group" >
+                <label asp-for="Title" class="control-label" ></label>
+                <input asp-for="Title" class="form-control" />
+
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Author" class="control-label" style="color: #e66162"></label>
+                <input asp-for="Author" class="form-control" />
+
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Genre" class="control-label" style="color: #e66162"></label>
+                <input asp-for="Genre" class="form-control" />
+
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label" style="color: #e66162"></label>
+                <input asp-for="Description" class="form-control" />
+
+
+            </div>
+
+            <div class="form-group form-check">
+                <label class="control-label">
+                    <input class="form-check-input" style="color: #e66162"
+                           asp-for="IsAvailable" />@Html.DisplayNameFor(model => model.IsAvailable)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Created" class="control-label"></label>
+                <input asp-for="Created" class="form-control" />
+
+            </div>
+            
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-danger" style="margin-bottom:10px; margin-top:10px" />
+                <a asp-action="BookIndex" class="btn btn-danger" style="margin-bottom:10px; margin-top:10px">Back to list</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+

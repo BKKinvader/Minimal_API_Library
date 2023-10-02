@@ -14,6 +14,7 @@ namespace MinimalAPI_Book
             //CreateMap<BookCreateDTO, Book>();
 
             CreateMap<Book, BookDTO>().ReverseMap();
+            CreateMap<Book, BookUpdateDTO>().ReverseMap();
 
         }
     }
